@@ -1,0 +1,328 @@
+body{
+	font-family: 'Quicksand', sans-serif;
+}
+
+.colorSelector{
+	width: 50px;
+	height: 50px;
+	float: left;
+}
+
+#playerPlaying{
+	background-image: url('../images/backgroundPlayer.jpg');
+	background-repeat: no-repeat;
+	width: 750px;
+	height: 1183px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#boardPlaying{
+	background-image: url('../images/backgroundBoard.jpg');
+	background-repeat: no-repeat;
+	width: 768px;
+	height: 959px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#playerPlayingHeader{
+}
+
+#playerPlayingLogo{
+	width: 40%;
+}
+
+#votes{
+	position: absolute;
+	top: 867px;
+	left: 139px;
+	width: 424px;
+}
+
+#votesTitle{
+	transform: rotate(90deg);
+	font-size: 20pt;
+}
+
+.circle{
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	margin-left: 18px;
+	float: right;
+}
+
+.rabbit{
+	position: absolute;
+}
+
+#myTurnButton{
+
+}
+
+
+.turnButtons{
+	color: white;
+	font-weight: 600;
+	font-size: 60pt;
+	position: relative;
+	top: 83px;
+	left: 105px;
+}
+
+.yaVote{
+	color: white;
+	font-weight: 600;
+	font-size: 149pt;
+	position: relative;
+	top: 83px;
+	left: 105px;
+}
+
+
+.gigante{
+	font-size: 500pt;
+}
+
+.upsButton{
+	top: 1000px;
+	left: 100px;
+}
+
+
+#processPointsButton{
+	position: absolute;
+	transform: rotate(90deg);
+	color: white;
+	font-weight: 400;
+	font-size: 30pt;
+	top: 859px;
+	left: 99px;
+}
+
+#nextRoundButton{
+	position: absolute;
+	transform: rotate(90deg);
+	color: white;
+	font-weight: 400;
+	font-size: 30pt;
+	top: 859px;
+	left: 99px;
+}
+
+.voteNumber{
+	font-size: 60pt;
+	position: absolute;
+}
+
+.bigNumber{
+	font-weight: 400;
+	position: relative;
+	text-align: center;
+	width: 200px;
+}
+
+#itsMyVote{
+	top: 44px;
+	left: 270px;
+	font-size: 266pt;
+}
+
+#itsMyCard{
+	left: 505px;
+	top: 119px;
+	font-size: 143pt;
+}
+
+#voteButton{
+	color: white;
+	font-size: 90pt;
+	font-weight: 600;
+	position: relative;
+	top: 139px;
+	left: 208px;
+}
+
+.fillScreen{
+	height: 1335px;
+}
+
+.normalHeight{
+	height:214px;
+}
+
+a:link {
+	text-decoration: none;
+	color: black;
+}
+
+a:visited {
+	text-decoration: none;
+	color: black;
+}
+
+a:hover {
+	text-decoration: none;
+	color: grey;
+}
+
+a:active {
+	text-decoration: none;
+	color: black;
+}
+
+.vote0{
+	top: 238px;
+	left: 60px;
+}
+
+.vote1{
+	top: 352px;
+	left: 52px;
+}
+
+.vote2{
+	top: 469px;
+	left: 55px;
+}
+
+.vote3{
+	top: 581px;
+	left: 50px;
+}
+
+.vote4{
+	top: 238px;
+	left: 643px;
+}
+
+.vote5{
+	top: 353px;
+	left: 640px;
+}
+
+.vote6{
+	top: 470px;
+	left: 642px;
+}
+
+.vote7{
+	top: 582px;
+	left: 640px;
+}
+
+.card0{
+	top: 796px;
+	left: 57px;
+}
+
+.card1{
+	top: 796px;
+	left: 162px;
+}
+
+.card2{
+	top: 796px;
+	left: 279px;
+}
+
+.card3{
+	top: 796px;
+	left: 385px;
+}
+
+.card4{
+	top: 909px;
+	left: 56px;
+}
+
+.card5{
+	top: 909px;
+	left: 162px;
+}
+
+.card6{
+	top: 909px;
+	left: 279px;
+}
+
+.card7{
+	top: 909px;
+	left: 389px;
+}
+
+.cardVote1{
+	font-size: 24pt;
+	position: absolute;
+	right: 61px;
+	top: 779px;
+	transform: rotate(90deg);
+	color: #aaaaaa;
+}
+
+.cardVote2{
+	font-size: 24pt;
+	position: absolute;
+	right: 61px;
+	top: 478px;
+	transform: rotate(90deg);
+	color: #aaaaaa;
+
+}
+
+.cardVote3{
+	font-size: 24pt;
+	position: absolute;
+	right: 61px;
+	top: 175px;
+	transform: rotate(90deg);
+	color: #aaaaaa;
+}
+
+.cardVote4{
+	font-size: 24pt;
+	position: absolute;
+	right: 219px;
+	top: 57px;
+	color: #aaaaaa;
+	transform: rotate(180deg);
+}
+
+.cardVote5{
+	font-size: 24pt;
+	position: absolute;
+	left: 198px;
+	top: 57px;
+	color: #aaaaaa;
+	transform: rotate(180deg);
+}
+
+.cardVote6{
+	font-size: 24pt;
+	position: absolute;
+	left: 57px;
+	top: 172px;
+	color: #aaaaaa;
+	transform: rotate(270deg);
+}
+
+.cardVote7{
+	font-size: 24pt;
+	position: absolute;
+	left: 57px;
+	top: 472px;
+	color: #aaaaaa;
+	transform: rotate(270deg);
+}
+
+.cardVote8{
+	font-size: 24pt;
+	position: absolute;
+	left: 59px;
+	top: 717px;
+	color: #aaaaaa;
+	transform: rotate(270deg);
+}

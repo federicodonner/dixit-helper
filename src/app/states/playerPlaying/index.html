@@ -1,0 +1,27 @@
+<div id="playerPlaying">
+	<div id=playerPlayingHeader ng-style="{'background-color': data.playerColor}" ng-class="{'fillScreen':data.imDone, 'normalHeight':!data.imDone}">
+		<img src="images/logoDixit.png" id="playerPlayingLogo"/>
+		<a ng-click="myTurn()" id="myTurnButton" class="turnButtons" ng-hide="data.notMyTurn || data.imDone" >Mi turno</a>
+		<div ng-if="data.imDone && !data.showVote">
+			<a class="turnButtons upsButton" ng-click="notMyTurn()">ups!</a>
+		</div>
+		<div ng-hide="!data.imDone" class="yaVote" ng-class="{'gigante': data.showVote}">
+			{{data.message}}
+		</div>
+	</div>
+
+	<div ng-hide="data.imDone">
+		<div id="itsMyVote" class="bigNumber">
+			{{ data.roundVote }}
+		</div>
+
+		<votes-directive active-players="data.playerNumbers" on-click="myVote(thisClick)" this-class="'vote'"></votes-directive>
+		<div id="itsMyCard" class="bigNumber">
+			{{ data.roundCard }}
+		</div>
+		<votes-directive active-players="data.playerNumbers" on-click="myCard(thisClick)" this-class="'card'"></votes-directive>
+		<div ng-hide="data.roundVote == 0 || data.roundCard == 0 || data.roundCard == data.roundVote" id="voteButton">
+			<a href ng-click="vote()" ng-style="{'color': 'white'}">Votar</a>
+		</div>
+	</div>
+</div>

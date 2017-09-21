@@ -1,0 +1,13 @@
+<div>
+	Estos son los jugadores:
+	<ul>
+		<li ng-repeat="jugador in activePlayers track by $index">
+			{{ jugador }} - {{ playerColors[$index]}}
+		</li>
+	</ul>
+</div>
+<a href ng-click="startPlaying()">Empezar a jugar</a>
+<br/>
+<br/>
+<br/>
+<h1><a ng-click="verTodo()">VER TODO</a></h1>

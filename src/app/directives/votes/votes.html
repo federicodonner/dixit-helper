@@ -1,0 +1,3 @@
+<div>
+	<a class="voteNumber" ng-repeat="player in activePlayers track by $index"  ng-click="onClick({thisClick:$index+1})" ng-class="'' + thisClass + $index" ng-class="'botonVotar'+$index"> {{ $index + 1}} </a>
+</div>

@@ -1,0 +1,5 @@
+<div>
+<div ng-repeat="color in colorPicker track by $index">
+		<div class="colorSelector" ng-style="{'background-color': color}" ng-click="onClick({thisColor:color})" ng-hide="colorToHide[$index]"></div>
+	</div>
+</div>
