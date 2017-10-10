@@ -28,7 +28,7 @@ app.service("BoardPlayingService", [
         _self.data.playerColors = $stateParams.playerColors;
         _self.data.playerRabbits = $stateParams.playerRabbits;
 
-        _self.data.channel = $rootScope.pusher.subscribe('private-players');
+        _self.data.channel = $rootScope.pusher.subscribe('private-game_'+$stateParams.gameId);
 
         _self.sendPlayerList();
         _self.receiveVotes();

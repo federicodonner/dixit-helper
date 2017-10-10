@@ -36,6 +36,8 @@ $pusher = new Pusher\Pusher( $app_key, $app_secret, $app_id, array('cluster' => 
 	<script src="app/states/boardConfig/boardConfigService.js"></script>
 
 	<script src="app/states/playerConfig/playerConfigController.js"></script>
+<script src="app/states/playerConfig/playerConfigService.js"></script>
+
 	<script src="app/states/playerPlaying/playerPlayingController.js"></script>
 	<script src="app/states/playerPlaying/playerPlayingService.js"></script>
 

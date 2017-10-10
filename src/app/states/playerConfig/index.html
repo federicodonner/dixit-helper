@@ -1,7 +1,19 @@
 <h1>Este es el jugador</h1>
+
+<div ng-if="!data.gameId">
+	Elegir juego:
+	<p ng-repeat="game in data.gamesId track by $index">
+		<a ng-click="subscribeToChannel(game)">{{game}}</a>
+	</p>
+</div>
+<div ng-if="data.gameId">
+	<h1>{{data.gameId}}</h1>
+</div>
+
+
 Elegir color:
 
 <div ng-style="{'background-color': playerColor}">
-	<colors-directive color-picker="colors" color-to-hide="hideColor" on-click="sendColor(thisColor)"></colors-directive>
+	<colors-directive color-picker="data.colors" color-to-hide="data.hideColor" on-click="sendColor(thisColor)"></colors-directive>
 </div>
 </div>

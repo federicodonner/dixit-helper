@@ -25,7 +25,7 @@ app.service("PlayerPlayingService", [
       },
 
       initialize:function(){
-        _self.data.channel = $rootScope.pusher.subscribe('private-players');
+        _self.data.channel = $rootScope.pusher.subscribe('private-game_'+$stateParams.gameId);
         _self.data.playerNumber = $stateParams.playerNumber;
         _self.data.playerColor = $stateParams.playerColor;
 

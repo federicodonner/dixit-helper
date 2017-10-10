@@ -25,7 +25,7 @@ app.config(function($stateProvider, localStorageServiceProvider){
   var playerPlaying = {
     name: 'playerPlaying',
     url: '/playerPlaying',
-    params: {playerNumber: null, playerColor: null, channel: null},
+    params: {playerNumber: null, playerColor: null, gameId: null},
     templateUrl: 'app/states/playerPlaying/index.html',
     controller: 'PlayerPlayingController'
   }
@@ -33,7 +33,7 @@ app.config(function($stateProvider, localStorageServiceProvider){
   var boardPlaying = {
     name: 'boardPlaying',
     url: '/boardPlaying',
-    params: {activePlayers: null, playerColors: null, playerRabbits: null, channel: null},
+    params: {activePlayers: null, playerColors: null, playerRabbits: null, gameId: null},
     templateUrl: 'app/states/boardPlaying/index.html',
     controller: 'BoardPlayingController'
   }
@@ -49,7 +49,7 @@ app.config(function($stateProvider, localStorageServiceProvider){
 
   localStorageServiceProvider.setPrefix('dixit');
   localStorageServiceProvider.setStorageType('localStorage');
-  localStorageServiceProvider.setDefaultToCookie(true);
+  localStorageServiceProvider.setDefaultToCookie(false);
   localStorageServiceProvider.setStorageCookie(3, '/', false);
   localStorageServiceProvider.setStorageCookieDomain('window.location');
 

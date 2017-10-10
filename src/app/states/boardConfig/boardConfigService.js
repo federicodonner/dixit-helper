@@ -34,10 +34,13 @@ app.service("BoardConfigService", [
         activePlayers:[],
         availableColors:[],
         playerColors:[],
-        playerRabbits:[]
+        playerRabbits:[],
+        gameId:''
       },
 
       initialize:function(){
+        _self.data.gameId = Math.random().toString(36).substring(2, 15);
+
         $rootScope.pusher = new Pusher('a9b70dd2140d41d3e8dd', {
           cluster: 'us2'
           ,authEndpoint: './pusher_auth.php'
@@ -49,13 +52,24 @@ app.service("BoardConfigService", [
       },
 
       newBoard:function(){
-        _self.data.channel = $rootScope.pusher.subscribe('private-players');
-        _self.data.channel.bind('pusher:subscription_succeeded', function(){
-          console.log("Conectado al canal private-players");
-          _self.data.channel.bind('client-newPlayer', function(response){
+        _self.data.channelNewPlayers = $rootScope.pusher.subscribe('private-registerPlayers');
+
+        _self.data.channelNewPlayers.bind('pusher:subscription_succeeded', function(){
+          console.log("Conectado al canal private-registerPlayers");
+          _self.data.channelNewPlayers.bind('client-requestGameId', function(response){
+            _self.data.channelNewPlayers.trigger('client-replyGameId', {'gameId':_self.data.gameId});
+          });
+        });
+
+        _self.data.gameChannel = $rootScope.pusher.subscribe('private-game_'+_self.data.gameId);
+        _self.data.gameChannel.bind('pusher:subscription_succeeded', function(){
+          console.log("Conectado al canal private-game_"+_self.data.gameId);
+
+          _self.data.gameChannel.bind('client-newPlayer', function(response){
             _self.registerPlayer(response);
           });
-          _self.data.channel.bind('client-playerColor', function(response){
+
+          _self.data.gameChannel.bind('client-playerColor', function(response){
             _self.registerColor(response);
           });
         });
@@ -63,7 +77,7 @@ app.service("BoardConfigService", [
 
       registerPlayer:function(response){
         _self.data.activePlayers.push(response.playerNumber);
-        _self.data.channel.trigger('client-availableColors', _self.getAvailableColors());
+        _self.data.gameChannel.trigger('client-availableColors', _self.getAvailableColors());
       },
 
       registerColor:function(response){
@@ -100,7 +114,7 @@ app.service("BoardConfigService", [
 
 
       startPlaying:function(){
-        $state.go('boardPlaying', {activePlayers: _self.data.activePlayers, playerColors: _self.data.playerColors, playerRabbits: _self.data.playerRabbits, channel:_self.data.channel});
+        $state.go('boardPlaying', {activePlayers: _self.data.activePlayers, playerColors: _self.data.playerColors, playerRabbits: _self.data.playerRabbits, gameId:_self.data.gameId});
       },
 
       verTodo:function(){
