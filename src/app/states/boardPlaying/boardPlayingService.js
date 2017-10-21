@@ -30,25 +30,37 @@ app.service("BoardPlayingService", [
 
         _self.data.channel = $rootScope.pusher.subscribe('private-game_'+$stateParams.gameId);
 
+        _self.initializeBoard();
+
         _self.sendPlayerList();
         _self.receiveVotes();
 
         _self.resetForNextRound();
+
+        _self.data.channel.bind('client-getPlayersRecover', function(response){
+          _self.sendPlayerList();
+        })
+
+
+
       },
 
       sendPlayerList:function(){
         _self.data.channel.trigger('client-playerList', _self.getPlayerList());
-
       },
 
+      initializeBoard:function(){
+        _self.data.activePlayers.forEach(function(player, index){
+          _self.data.roundVotes.push(0);
+          _self.data.roundCards.push(0);
+          _self.data.playerPositions.push(0);
+        });
+      },
 
       getPlayerList:function(){
         var playerListAux = '{"players": [';
         var theFirst = true;
         _self.data.activePlayers.forEach(function(player, index){
-          _self.data.roundVotes.push(0);
-          _self.data.roundCards.push(0);
-          _self.data.playerPositions.push(0);
           if(theFirst){
             theFirst = false;
           }else{
@@ -152,10 +164,9 @@ app.service("BoardPlayingService", [
       },
 
       countEachCardVotes:function(){
-        console.log(_self.data.roundVotes);
         _self.data.roundVotes.forEach(function(vote, index){
           if(vote != 999){
-            _self.data.cardVotes[vote] = _self.data.cardVotes[vote] + 1;
+            _self.data.cardVotes[vote-1] = _self.data.cardVotes[vote-1] + 1;
           }
         });
       },
@@ -178,7 +189,6 @@ app.service("BoardPlayingService", [
 
       showVotesInPlayers:function(){
         _self.data.channel.trigger('client-showVotes', "Mostrar Votos");
-        console.log("send show votes");
       },
 
       sendResetToPlayers:function(){

@@ -26,13 +26,24 @@ app.service("PlayerPlayingService", [
 
       initialize:function(){
         _self.data.channel = $rootScope.pusher.subscribe('private-game_'+$stateParams.gameId);
+
+
+        _self.data.channel.bind('pusher:subscription_succeeded', function(){
+          console.log('conectado al canal private-game_'+$stateParams.gameId);
+
+          if($stateParams.recoverGame){
+            _self.data.channel.trigger('client-getPlayersRecover', {'playerId':_self.data.playerNumber});
+          }
+
+        });
+
         _self.data.playerNumber = $stateParams.playerNumber;
         _self.data.playerColor = $stateParams.playerColor;
-
         _self.receivePlayerList();
         _self.beginNextRound();
         _self.receivePlayerTurn();
         _self.receiveShowVotes();
+
       },
 
       receivePlayerList:function(){
@@ -42,6 +53,9 @@ app.service("PlayerPlayingService", [
       },
 
       savePlayers:function(response){
+        _self.data.playerNumbers = [];
+        _self.data.playerColors = [];
+        _self.data.playerPositions = [];
         response.players.forEach(function(player){
           _self.data.playerNumbers.push(player.player);
           _self.data.playerColors.push(player.color);
@@ -67,7 +81,6 @@ app.service("PlayerPlayingService", [
           _self.data.showVote = true;
           _self.data.message = _self.data.roundVote;
           $rootScope.$digest();
-          console.log("receiveShowVotes");
         });
 
       },

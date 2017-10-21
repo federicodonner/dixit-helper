@@ -2,10 +2,12 @@ app.service("PlayerConfigService", [
   '$rootScope',
   '$state',
   '$stateParams',
+  'LocalStorageService',
   function (
     $rootScope,
     $state,
-    $stateParams
+    $stateParams,
+    LocalStorageService
   ) {
 
     var _self = {
@@ -23,11 +25,9 @@ app.service("PlayerConfigService", [
         $rootScope.pusher = new Pusher('a9b70dd2140d41d3e8dd', {
           cluster: 'us2'
           ,authEndpoint: './pusher_auth.php'
-          //,callback: 'funcionCallback'
         });
 
         _self.data.playerNumber = Math.random().toString(36).substring(2, 15);
-        console.log(_self.data.playerNumber);
         _self.registerPlayer();
       },
 
@@ -38,8 +38,10 @@ app.service("PlayerConfigService", [
 
           _self.data.channel.trigger('client-requestGameId', {'player':_self.data.playerNumber});
           _self.data.channel.bind('client-replyGameId', function(response){
-            _self.data.gamesId.push(response.gameId);
-            $rootScope.$digest();
+            if(_self.data.gamesId.indexOf(response.gameId) == -1){
+              _self.data.gamesId.push(response.gameId);
+              $rootScope.$digest();
+            }
           })
         });
       },
@@ -81,7 +83,8 @@ app.service("PlayerConfigService", [
       sendColor:function(color){
         _self.data.playerColor = color;
         _self.data.gameChannel.trigger('client-playerColor', {'playerNumber': _self.data.playerNumber, 'playerColor': color});
-        $state.go('playerPlaying', {playerNumber: _self.data.playerNumber, playerColor: _self.data.playerColor, gameId:_self.data.gameId});
+        LocalStorageService.storeInLS(_self.data.playerNumber, _self.data.playerColor, _self.data.gameId);
+        $state.go('playerPlaying', {playerNumber: _self.data.playerNumber, playerColor: _self.data.playerColor, gameId:_self.data.gameId, recoverGame:false});
       }
 
 

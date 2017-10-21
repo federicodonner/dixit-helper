@@ -3,36 +3,32 @@ var app = angular.module('dixit', ['ui.router', 'LocalStorageModule']);
 app.config(function($stateProvider, localStorageServiceProvider){
   var welcome = {
     name: 'welcome',
-    url: '/welcome',
+
     templateUrl: 'app/states/welcome/index.html',
     controller: 'WelcomeController'
   }
 
   var boardConfig = {
     name:'boardConfig',
-    url: '/boardConfig',
     templateUrl: 'app/states/boardConfig/index.html',
     controller: 'BoardConfigController'
   }
 
   var playerConfig = {
     name: 'playerConfig',
-    url: '/playerConfig',
     templateUrl: 'app/states/playerConfig/index.html',
     controller: 'PlayerConfigController'
   }
 
   var playerPlaying = {
     name: 'playerPlaying',
-    url: '/playerPlaying',
-    params: {playerNumber: null, playerColor: null, gameId: null},
+    params: {playerNumber: null, playerColor: null, gameId: null, recoverGame:false},
     templateUrl: 'app/states/playerPlaying/index.html',
     controller: 'PlayerPlayingController'
   }
 
   var boardPlaying = {
     name: 'boardPlaying',
-    url: '/boardPlaying',
     params: {activePlayers: null, playerColors: null, playerRabbits: null, gameId: null},
     templateUrl: 'app/states/boardPlaying/index.html',
     controller: 'BoardPlayingController'

@@ -2,6 +2,41 @@ body{
 	font-family: 'Quicksand', sans-serif;
 }
 
+#welcomeScreen{
+	background-image: url('../images/welcomeBackground.jpg');
+	background-repeat: no-repeat;
+	width: 750px;
+	height: 1183px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.quieroJugar{
+	color: white;
+	font-size: 69pt;
+	font-weight: 700;
+	position: absolute;
+	top: 856px;
+	LEFT: 20px;
+}
+
+.soyElTablero{
+	color: white;
+	position: absolute;
+	top: 1087px;
+	font-size: 25pt;
+	left: 28px;
+}
+
+.retomarPartida{
+	color: white;
+	font-size: 25pt;
+	position: absolute;
+	top: 1087px;
+	right: 28px;
+}
+
 .colorSelector{
 	width: 50px;
 	height: 50px;
@@ -76,10 +111,15 @@ body{
 .yaVote{
 	color: white;
 	font-weight: 600;
-	font-size: 149pt;
+	font-size: 148pt;
 	position: relative;
-	top: 83px;
-	left: 105px;
+	top: 66px;
+	transform:rotate(180deg);
+}
+
+.notNumber{
+	text-align: left;
+	padding-left: 28px;
 }
 
 
@@ -88,7 +128,7 @@ body{
 }
 
 .upsButton{
-	top: 1000px;
+	top: 850px;
 	left: 100px;
 }
 
@@ -141,8 +181,8 @@ body{
 	color: white;
 	font-size: 90pt;
 	font-weight: 600;
-	position: relative;
-	top: 139px;
+	position: absolute;
+	top: 1029px;
 	left: 208px;
 }
 
@@ -156,22 +196,22 @@ body{
 
 a:link {
 	text-decoration: none;
-	color: black;
+
 }
 
 a:visited {
 	text-decoration: none;
-	color: black;
+
 }
 
 a:hover {
 	text-decoration: none;
-	color: grey;
+
 }
 
 a:active {
 	text-decoration: none;
-	color: black;
+
 }
 
 .vote0{
@@ -252,6 +292,10 @@ a:active {
 .card7{
 	top: 909px;
 	left: 389px;
+}
+
+.hideCardVote{
+	opacity: 0;
 }
 
 .cardVote1{

@@ -47,6 +47,7 @@ $pusher = new Pusher\Pusher( $app_key, $app_secret, $app_id, array('cluster' => 
 	<script src="app/directives/colors/colorsDirective.js"></script>
 	<script src="app/directives/votes/votesDirective.js"></script>
 
+	<script src="app/services/localStorageService.js"></script>
 
 
 

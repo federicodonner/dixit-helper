@@ -1,6 +1,9 @@
-<div>
-	<h1><a href ng-click="newBoard()">Soy el tablero</a></h1>
-	<br/>
-	<br/>
-	<h1><a href ng-click="newPlayer()">Soy un jugador</a></h1>
+<div id="welcomeScreen">
+	<a href ng-click="newPlayer()" class="quieroJugar">QUIERO JUGAR!</a>
+	<a href ng-click="newBoard()" class="soyElTablero">Soy el tablero</a>
+
+
+	<div ng-if="localStorageAvailable">
+		<a ng-click="retomarPartida()" class="retomarPartida">Retomar partida</a>
+	</div>
 </div>
