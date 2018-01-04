@@ -13,9 +13,10 @@ app.service("LocalStorageService", [
 
       },
 
-      storeInLS:function(playerNumber, playerColor, gameId){
+      storeInLS:function(playerNumber, playerName, playerColor, gameId){
         var playerData = {};
         playerData.playerNumber = playerNumber;
+        playerData.playerNAme = playerName;
         playerData.playerColor = playerColor;
         playerData.gameId = gameId;
         localStorageService.set('playerData', playerData);
@@ -26,7 +27,7 @@ app.service("LocalStorageService", [
           return localStorageService.get('playerData');
         }else{
           return -1
-        }    
+        }
       }
 
     }

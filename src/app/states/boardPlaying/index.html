@@ -1,17 +1,20 @@
 <div id="boardPlaying">
 	<div id="rabbits">
-		<img class="rabbit" ng-repeat="player in data.activePlayers track by $index" ng-src="images/{{data.playerRabbits[$index]}}" ng-style="{'top': 185+data.playerPositions[$index]*20.3+'px', 'right': 167+$index*54+'px'}"></img>
+		<div class="rabbit" ng-repeat="player in data.activePlayers track by $index" ng-style="{'top': 185+data.playerPositions[$index]*20.3+'px', 'right': 167+$index*54+'px'}">
+			<img  ng-src="images/{{data.playerRabbits[$index]}}"></img>
+			<div class="playerNameInBoard" ng-style="{'color': data.playerColors[$index]}">{{data.playerNames[$index]}}</div>
+		</div>
 	</div>
 
 	<div id="votes">
 		<div class="circle" ng-repeat="player in data.activePlayers track by $index" ng-style="{'background': data.playerColors[$index]}" ng-class="{'hideCardVote': data.roundVotes[$index] != 0}"></div>
 	</div>
 
-<div ng-repeat="vote in data.cardVotes track by $index" class="cardVote{{$index+1}}">
-{{vote}}
-</div>
+	<div ng-repeat="vote in data.cardVotes track by $index" class="cardVote{{$index+1}}">
+		{{vote}}
+	</div>
 
-	<a href id="processPointsButton" ng-show="allVotesIn() && !data.readyForNextRound" ng-click="processPoints()">OK</a>
+	<a href id="processPointsButton" ng-show="allVotesIn() && !data.readyForNextRound" ng-click="processRound()">OK</a>
 
 
 	<a href id="nextRoundButton" ng-show="data.readyForNextRound" ng-click = "resetForNextRound()"> --> </a>

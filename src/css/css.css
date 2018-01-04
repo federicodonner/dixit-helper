@@ -37,11 +37,20 @@ body{
 	right: 28px;
 }
 
-.colorSelector{
-	width: 50px;
-	height: 50px;
-	float: left;
+.colorsToPick{
+	position: relative;
+	top: 590px;
 }
+
+.colorSelector{
+	width: 240px;
+	height: 118px;
+	float: left;
+	margin: 31px 60px 0 50px;
+}
+
+
+
 
 #playerPlaying{
 	background-image: url('../images/backgroundPlayer.jpg');
@@ -51,6 +60,108 @@ body{
 	position: absolute;
 	top: 0px;
 	left: 0px;
+}
+
+#boardConfigScreen{
+	background-image: url('../images/backgroundBoardConfig.jpg');
+	background-repeat: no-repeat;
+	width: 768px;
+	height: 959px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.boardConfigDynamic{
+	transform: rotate(90deg);
+	position: relative;
+	font-size: 23pt;
+	color: #978F88;
+}
+
+.game-name{
+	color:black;
+	padding: 10px;
+	bottom: -411px;
+	left: 397px;
+}
+
+#game_suffix{
+	top: 581px;
+	left: 498px;
+	width: 110px
+}
+
+#game_name{
+	top: 361px;
+	left: 498px;
+	width: 110px
+}
+
+#createGameButton{
+	top: 747px;
+	width: 182px;
+	left: 462px;
+	color: red;
+}
+
+#playerList{
+	top: 229px;
+	height: 316px;
+	left: -103px;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+
+#startPlayingButton{
+	top: 449px;
+	width: 250px;
+	left: -80px;
+}
+
+#playerConfig{
+	background-image: url('../images/backgroundPlayerConfig.jpg');
+	background-repeat: no-repeat;
+	width: 750px;
+	height: 1183px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.availableGames{
+	position: relative;
+	top: 220px;
+	font-size: 30pt;
+	overflow: scroll;
+	white-space: nowrap;
+}
+
+.singleGameName{
+	padding-left:50px;
+}
+
+.playerInput{
+	top: 473px;
+	left: 19px;
+	position: absolute;
+}
+
+.playerTextInput{
+	font-size: 23pt;
+	width: 510px;
+}
+
+
+.error{
+	font-size: 18pt;
+	margin-top: 6px;
+	color: red;
 }
 
 #boardPlaying{
@@ -113,8 +224,25 @@ body{
 	font-weight: 600;
 	font-size: 148pt;
 	position: relative;
-	top: 66px;
+	top: 0px;
 	transform:rotate(180deg);
+}
+
+.playerMessage{
+	margin-left: auto;
+	font-size: 50pt;
+	color: white;
+	margin: 20px;
+}
+
+.messageWrapper{
+
+}
+
+.playerMessageWrapper{
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
 }
 
 .notNumber{
@@ -123,14 +251,16 @@ body{
 }
 
 
-.gigante{
-	font-size: 500pt;
+.showVote{
+	font-size: 70pt;
+	top: 234px;
 }
 
 .upsButton{
 	top: 850px;
 	left: 100px;
 }
+
 
 
 #processPointsButton{
@@ -196,22 +326,18 @@ body{
 
 a:link {
 	text-decoration: none;
-
 }
 
 a:visited {
 	text-decoration: none;
-
 }
 
 a:hover {
 	text-decoration: none;
-
 }
 
 a:active {
 	text-decoration: none;
-
 }
 
 .vote0{
@@ -303,7 +429,7 @@ a:active {
 	position: absolute;
 	right: 61px;
 	top: 779px;
-	transform: rotate(90deg);
+	transform: rotate(270deg);
 	color: #aaaaaa;
 }
 
@@ -312,7 +438,7 @@ a:active {
 	position: absolute;
 	right: 61px;
 	top: 478px;
-	transform: rotate(90deg);
+	transform: rotate(270deg);
 	color: #aaaaaa;
 
 }
@@ -322,7 +448,7 @@ a:active {
 	position: absolute;
 	right: 61px;
 	top: 175px;
-	transform: rotate(90deg);
+	transform: rotate(270deg);
 	color: #aaaaaa;
 }
 
@@ -350,7 +476,7 @@ a:active {
 	left: 57px;
 	top: 172px;
 	color: #aaaaaa;
-	transform: rotate(270deg);
+	transform: rotate(90deg);
 }
 
 .cardVote7{
@@ -359,7 +485,7 @@ a:active {
 	left: 57px;
 	top: 472px;
 	color: #aaaaaa;
-	transform: rotate(270deg);
+	transform: rotate(90deg);
 }
 
 .cardVote8{
@@ -368,5 +494,16 @@ a:active {
 	left: 59px;
 	top: 717px;
 	color: #aaaaaa;
-	transform: rotate(270deg);
+	transform: rotate(90deg);
+}
+
+.playerNameInBoard{
+	font-size: 21pt;
+	transform: rotate(90deg);
+	margin-top: 43px;
+	margin-left: -20px;
+}
+
+.playerNames{
+	width: 100%;
 }

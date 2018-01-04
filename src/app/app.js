@@ -22,14 +22,14 @@ app.config(function($stateProvider, localStorageServiceProvider){
 
   var playerPlaying = {
     name: 'playerPlaying',
-    params: {playerNumber: null, playerColor: null, gameId: null, recoverGame:false},
+    params: {playerNumber: null, playerName: null, playerColor: null, gameId: null, recoverGame:false},
     templateUrl: 'app/states/playerPlaying/index.html',
     controller: 'PlayerPlayingController'
   }
 
   var boardPlaying = {
     name: 'boardPlaying',
-    params: {activePlayers: null, playerColors: null, playerRabbits: null, gameId: null},
+    params: {activePlayers: null, playerNames: null, playerColors: null, playerRabbits: null, gameId: null},
     templateUrl: 'app/states/boardPlaying/index.html',
     controller: 'BoardPlayingController'
   }

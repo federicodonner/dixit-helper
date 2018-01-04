@@ -12,16 +12,18 @@ app.service("PlayerPlayingService", [
       data:{
         channel:null,
         playerNumber:0,
+        playerName:'',
         playerColor:"",
         roundVote:0,
         roundCard:0,
         playerNumbers:[],
         playerColors:[],
         playerPositions:[],
+        playerNames:[],
         notMyTurn:false,
         message:"",
         imDone:false,
-        showVote:false
+        showVote:false,
       },
 
       initialize:function(){
@@ -38,12 +40,12 @@ app.service("PlayerPlayingService", [
         });
 
         _self.data.playerNumber = $stateParams.playerNumber;
+        _self.data.playerName = $stateParams.playerName;
         _self.data.playerColor = $stateParams.playerColor;
         _self.receivePlayerList();
         _self.beginNextRound();
         _self.receivePlayerTurn();
         _self.receiveShowVotes();
-
       },
 
       receivePlayerList:function(){
@@ -56,11 +58,14 @@ app.service("PlayerPlayingService", [
         _self.data.playerNumbers = [];
         _self.data.playerColors = [];
         _self.data.playerPositions = [];
+        _self.data.playerNames = [];
         response.players.forEach(function(player){
           _self.data.playerNumbers.push(player.player);
           _self.data.playerColors.push(player.color);
           _self.data.playerPositions.push(player.position);
+          _self.data.playerNames.push(player.name);
           $rootScope.$digest();
+          console.log('playerNames: ',_self.data.playerNames);
         });
       },
 
@@ -77,9 +82,61 @@ app.service("PlayerPlayingService", [
       },
 
       receiveShowVotes:function(){
+        var votedPlayer = '';
+        var votes = [];
+        var cards = [];
+        var turnCard = 0;
+        var myIndex = 0;
+        var votedMyCard = [];
         _self.data.channel.bind('client-showVotes', function(response){
           _self.data.showVote = true;
-          _self.data.message = _self.data.roundVote;
+          console.log('playerNames ', _self.data.playerNames);
+          console.log('response ', response);
+          console.log('player Number', _self.data.playerNumber);
+          console.log('player Numbers', _self.data.playerNumbers);
+
+          votes = response.votes;
+          cards = response.cards;
+          turnCard = response.turnCard;
+          myIndex = _self.data.playerNumbers.indexOf(_self.data.playerNumber);
+
+
+          votes.forEach(function(vote, index){
+            if(vote == cards[myIndex]){
+              votedMyCard.push(_self.data.playerNames[index]);
+            }
+          })
+
+
+          if(!_self.data.notMyTurn){
+            //mi turno
+            if(votedMyCard.length == 0){
+              _self.data.message = 'NO ME VOTÓ NADIE';
+            }else if(votedMyCard.length == _self.data.playerNumbers.length-1){
+              _self.data.message = 'ME VOTARON TODOS';
+            }else{
+              _self.data.message = 'ME VOTARON: '+votedMyCard;
+            }
+          }else if(votes[myIndex] == turnCard){
+            //voté a la tarjeta correcta
+            votedPlayer = _self.data.playerNames[votes.indexOf(999)];
+            _self.data.message = 'VOTÉ A '+votedPlayer;
+          }else{
+            //voté a otra tarjeta
+            votedPlayer = _self.data.playerNames[cards.indexOf(votes[myIndex])]
+            _self.data.message = 'Voté a '+votedPlayer;
+          }
+
+          if(votedMyCard.length == 0){
+            _self.data.playerMessage = 'No te votó nadie';
+          }else if(votedMyCard.length == 1){
+            _self.data.playerMessage = 'Te votó: '+votedMyCard;
+          }else{
+            _self.data.playerMessage = 'Te votaron: '+votedMyCard;
+          }
+
+          _self.data.playerMessage.replace(/\,/g,', ');
+
           $rootScope.$digest();
         });
 
@@ -94,6 +151,7 @@ app.service("PlayerPlayingService", [
       },
 
       myTurn:function(){
+        _self.data.roundVote = 0;
         _self.sendVote(999, 999);
         _self.data.imDone = true;
         _self.data.message = "MI TURNO";
@@ -121,6 +179,10 @@ app.service("PlayerPlayingService", [
         _self.data.notMyTurn = false;
         _self.data.imDone = false;
         _self.data.showVote = false;
+        _self.data.message = '';
+        _self.data.playerMessage = '';
+        _self.data.votedPlayer = '';
+        _self.data.votedMyCard = '';
         $rootScope.$digest();
 
       },

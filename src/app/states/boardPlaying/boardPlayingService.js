@@ -11,7 +11,8 @@ app.service("BoardPlayingService", [
     var _self = {
       data:{
         activePlayers:[],
-        activeColors:[],
+        playerNames:[],
+        playerColors:[],
         channel:null,
         playerRabbits:[],
         playerPositions:[],
@@ -25,6 +26,7 @@ app.service("BoardPlayingService", [
 
       initialize:function(){
         _self.data.activePlayers = $stateParams.activePlayers;
+        _self.data.playerNames = $stateParams.playerNames;
         _self.data.playerColors = $stateParams.playerColors;
         _self.data.playerRabbits = $stateParams.playerRabbits;
 
@@ -66,7 +68,7 @@ app.service("BoardPlayingService", [
           }else{
             playerListAux = playerListAux + ', ';
           }
-          playerListAux = playerListAux + '{"player": "' + player + '", "color": "' + _self.data.playerColors[index] + '", "position": ' + _self.data.playerPositions[index] + '}';
+          playerListAux = playerListAux + '{"player": "' + player + '", "name": "'+_self.data.playerNames[index]+'", "color": "' + _self.data.playerColors[index] + '", "position": ' + _self.data.playerPositions[index] + '}';
         });
         playerListAux = playerListAux + ']}';
         return playerListAux;
@@ -88,8 +90,6 @@ app.service("BoardPlayingService", [
       },
 
 
-
-
       receiveVotes:function(){
         _self.data.channel.bind('client-playerVote', function(response){
           _self.data.roundVotes[_self.data.activePlayers.indexOf(response.player)] = response.vote;
@@ -97,9 +97,6 @@ app.service("BoardPlayingService", [
           $rootScope.$digest();
         });
       },
-
-
-
 
       allVotesIn:function(){
         var allIn = true;
@@ -116,38 +113,45 @@ app.service("BoardPlayingService", [
         return allIn;
       },
 
-
-      processPoints:function(){
+      processRound:function(){
         if(_self.allVotesIn()){
-          _self.data.turnCard = _self.getTurnCard();
-          _self.countEachCardVotes();
           _self.showVotesInPlayers();
-          if(_self.allVotesCorrectOrNot(true, _self.data.turnCard)){
-            _self.data.roundVotes.forEach(function(vote, index){
-              if(vote!=999){
-                _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
-              }
-            });
-          }else if(_self.allVotesCorrectOrNot(false, _self.data.turnCard)){
-            _self.data.roundVotes.forEach(function(vote, index){
-              if(vote!=999){
-                _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
-                _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
-              }
-            });
-          }else{
-            _self.data.roundVotes.forEach(function(vote, index){
-              if(vote == _self.data.turnCard || vote == 999){
-                _self.data.playerPositions[index] = _self.data.playerPositions[index] + 3;
-              }else{
-                _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
-              }
-            });
-          }
           _self.data.readyForNextRound = true;
         }else{
           _self.data.message = "Faltan votos";
         }
+      },
+
+      processPoints:function(){
+        // if(_self.allVotesIn()){
+        _self.data.turnCard = _self.getTurnCard();
+        _self.countEachCardVotes();
+        if(_self.allVotesCorrectOrNot(true, _self.data.turnCard)){
+          _self.data.roundVotes.forEach(function(vote, index){
+            if(vote!=999){
+              _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
+            }
+          });
+        }else if(_self.allVotesCorrectOrNot(false, _self.data.turnCard)){
+          _self.data.roundVotes.forEach(function(vote, index){
+            if(vote!=999){
+              _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
+              _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
+            }
+          });
+        }else{
+          _self.data.roundVotes.forEach(function(vote, index){
+            if(vote == _self.data.turnCard || vote == 999){
+              _self.data.playerPositions[index] = _self.data.playerPositions[index] + 3;
+            }else{
+              _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
+            }
+          });
+        }
+        //   _self.data.readyForNextRound = true;
+        // }else{
+        //   _self.data.message = "Faltan votos";
+        // }
       },
 
       getTurnCard:function(){
@@ -160,6 +164,7 @@ app.service("BoardPlayingService", [
             card++;
           }
         }
+        _self.data.roundCards[_self.data.roundCards.indexOf(999)] = card;
         return card;
       },
 
@@ -188,7 +193,11 @@ app.service("BoardPlayingService", [
       },
 
       showVotesInPlayers:function(){
-        _self.data.channel.trigger('client-showVotes', "Mostrar Votos");
+        var informationToSend = {};
+        informationToSend['votes'] = _self.data.roundVotes;
+        informationToSend['cards'] = _self.data.roundCards;
+        informationToSend['turnCard'] = _self.data.turnCard;
+        _self.data.channel.trigger('client-showVotes', informationToSend);
       },
 
       sendResetToPlayers:function(){
@@ -196,6 +205,8 @@ app.service("BoardPlayingService", [
       },
 
       resetForNextRound:function(){
+        _self.processPoints();
+
         _self.data.roundVotes = [];
         _self.data.roundCards = [];
         _self.data.cradVotes = [];

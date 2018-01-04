@@ -1,17 +1,17 @@
-<div>
-	<p>Este es el juego:</p>
-	<p>{{data.gameId}}</p>
-</div>
-<div>
-	Estos son los jugadores:
-	<ul>
-		<li ng-repeat="jugador in activePlayers track by $index">
-			{{ jugador }} - {{ playerColors[$index]}}
+<div id="boardConfigScreen">
+	<input type="text" class="game-name boardConfigDynamic" ng-change="evalGameName()" ng-model="data.gameNamePrefix" ng-if="data.gameId == ''"/>
+	<div id="game_suffix" class="boardConfigDynamic"  ng-if="data.gameId == ''">{{data.gameNameSuffix}}</div>
+	<div id="game_name" class="boardConfigDynamic"  ng-if="data.gameId != ''">{{data.gameId}}</div>
+	<div class="boardConfigDynamic" id="createGameButton" ng-if="data.gameId == ''"><a ng-click="newBoard()" href>Crear juego</a></div>
+
+	<ul class="boardConfigDynamic" id="playerList">
+		<li ng-repeat="jugador in data.playerNames track by $index">
+			<span class="playerColorIndicator" ng-style="{
+				'background-color': data.playerColors[$index],
+				'color': data.playerColors[$index],
+				'font-size':'16pt'
+			}">El color</span> - {{ jugador }}
 		</li>
 	</ul>
+	<div class="boardConfigDynamic" id="startPlayingButton" ng-if="data.activePlayers.length > 2"><a href ng-click="startPlaying()">Empezar a jugar</a></div>
 </div>
-<a href ng-click="startPlaying()">Empezar a jugar</a>
-<br/>
-<br/>
-<br/>
-<h1><a ng-click="verTodo()">VER TODO</a></h1>

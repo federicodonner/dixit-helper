@@ -11,6 +11,9 @@ app.controller("BoardConfigController", [
 
     BoardConfigService.initialize();
 
+    $scope.evalGameName = BoardConfigService.evalGameName;
+    $scope.newBoard = BoardConfigService.newBoard;
+
     $scope.startPlaying = BoardConfigService.startPlaying;
 
     $scope.verTodo = BoardConfigService.verTodo;

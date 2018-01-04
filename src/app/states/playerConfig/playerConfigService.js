@@ -14,11 +14,13 @@ app.service("PlayerConfigService", [
       data:{
         playerNumber:0,
         playerColor:'',
+        playerName:'',
         colors:[],
         hideColor:[],
         channel:null,
         gamesId:[],
-        gameId:''
+        gameId:'',
+        missingName:false
       },
 
       initialize:function(){
@@ -29,6 +31,7 @@ app.service("PlayerConfigService", [
 
         _self.data.playerNumber = Math.random().toString(36).substring(2, 15);
         _self.registerPlayer();
+        _self.data.missingName = false;
       },
 
       registerPlayer:function(){
@@ -81,10 +84,14 @@ app.service("PlayerConfigService", [
       },
 
       sendColor:function(color){
-        _self.data.playerColor = color;
-        _self.data.gameChannel.trigger('client-playerColor', {'playerNumber': _self.data.playerNumber, 'playerColor': color});
-        LocalStorageService.storeInLS(_self.data.playerNumber, _self.data.playerColor, _self.data.gameId);
-        $state.go('playerPlaying', {playerNumber: _self.data.playerNumber, playerColor: _self.data.playerColor, gameId:_self.data.gameId, recoverGame:false});
+        if(_self.data.playerName == ''){
+          _self.data.missingName = true;
+        }else{
+          _self.data.playerColor = color;
+          _self.data.gameChannel.trigger('client-playerColor', {'playerNumber': _self.data.playerNumber, 'playerName': _self.data.playerName, 'playerColor': color});
+          LocalStorageService.storeInLS(_self.data.playerNumber, _self.data.playerName, _self.data.playerColor, _self.data.gameId);
+          $state.go('playerPlaying', {playerNumber: _self.data.playerNumber, playerName: _self.data.playerName, playerColor: _self.data.playerColor, gameId:_self.data.gameId, recoverGame:false});
+        }
       }
 
 

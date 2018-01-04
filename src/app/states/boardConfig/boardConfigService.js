@@ -32,14 +32,19 @@ app.service("BoardConfigService", [
           "rabbit8.png",
         ],
         activePlayers:[],
+        playerNames:[],
         availableColors:[],
         playerColors:[],
         playerRabbits:[],
-        gameId:''
+        gameId:'',
+        gameNameSuffix:0,
+        gameNamePrefix:''
       },
 
       initialize:function(){
-        _self.data.gameId = Math.random().toString(36).substring(2, 15);
+        // _self.data.gameId = Math.random().toString(36).substring(2, 15);
+        _self.data.gameNameSuffix = '_' + Math.round(Math.random()*100000);
+        _self.data.gameId = '';
 
         $rootScope.pusher = new Pusher('a9b70dd2140d41d3e8dd', {
           cluster: 'us2'
@@ -52,27 +57,45 @@ app.service("BoardConfigService", [
       },
 
       newBoard:function(){
-        _self.data.channelNewPlayers = $rootScope.pusher.subscribe('private-registerPlayers');
+        _self.data.gameNamePrefix = _self.data.gameNamePrefix.replace(/[\s\b]/g,'');
 
-        _self.data.channelNewPlayers.bind('pusher:subscription_succeeded', function(){
-          console.log("Conectado al canal private-registerPlayers");
-          _self.data.channelNewPlayers.bind('client-requestGameId', function(response){
+        if(_self.data.gameNamePrefix == ''){
+          return false;
+        }else{
+
+          _self.data.gameId = _self.data.gameNamePrefix + _self.data.gameNameSuffix;
+
+          _self.data.channelNewPlayers = $rootScope.pusher.subscribe('private-registerPlayers');
+
+          _self.data.channelNewPlayers.bind('pusher:subscription_succeeded', function(){
+            console.log("Conectado al canal private-registerPlayers");
             _self.data.channelNewPlayers.trigger('client-replyGameId', {'gameId':_self.data.gameId});
-          });
-        });
-
-        _self.data.gameChannel = $rootScope.pusher.subscribe('private-game_'+_self.data.gameId);
-        _self.data.gameChannel.bind('pusher:subscription_succeeded', function(){
-          console.log("Conectado al canal private-game_"+_self.data.gameId);
-
-          _self.data.gameChannel.bind('client-newPlayer', function(response){
-            _self.registerPlayer(response);
+            _self.data.channelNewPlayers.bind('client-requestGameId', function(response){
+              _self.data.channelNewPlayers.trigger('client-replyGameId', {'gameId':_self.data.gameId});
+            });
           });
 
-          _self.data.gameChannel.bind('client-playerColor', function(response){
-            _self.registerColor(response);
+          _self.data.gameChannel = $rootScope.pusher.subscribe('private-game_'+_self.data.gameId);
+          _self.data.gameChannel.bind('pusher:subscription_succeeded', function(){
+            console.log("Conectado al canal private-game_"+_self.data.gameId);
+
+            _self.data.gameChannel.bind('client-newPlayer', function(response){
+              _self.registerPlayer(response);
+            });
+
+            _self.data.gameChannel.bind('client-playerColor', function(response){
+              _self.registerColor(response);
+            });
           });
-        });
+        }
+      },
+
+
+      evalGameName:function(){
+        _self.data.gameNamePrefix = _self.data.gameNamePrefix.replace(/[^a-zA-Z0-9\s_]/g,'');
+        _self.data.gameNamePrefix = _self.data.gameNamePrefix.replace(/\b/g,'');
+        _self.data.gameNamePrefix = _self.data.gameNamePrefix.replace(/_*\s+_*/g,'_');
+
       },
 
       registerPlayer:function(response){
@@ -81,9 +104,14 @@ app.service("BoardConfigService", [
       },
 
       registerColor:function(response){
+        _self.data.playerNames[_self.data.activePlayers.indexOf(response.playerNumber)] = response.playerName;
         _self.data.playerColors[_self.data.activePlayers.indexOf(response.playerNumber)] = response.playerColor;
         _self.data.playerRabbits[_self.data.activePlayers.indexOf(response.playerNumber)] = _self.data.rabbits[_self.data.colors.indexOf(response.playerColor)];
         _self.data.availableColors[_self.data.colors.indexOf(response.playerColor)] = 0;
+
+        $rootScope.$digest();
+
+
       },
 
       setAvailableColors:function(colorsArray){
@@ -114,16 +142,9 @@ app.service("BoardConfigService", [
 
 
       startPlaying:function(){
-        $state.go('boardPlaying', {activePlayers: _self.data.activePlayers, playerColors: _self.data.playerColors, playerRabbits: _self.data.playerRabbits, gameId:_self.data.gameId});
-      },
-
-      verTodo:function(){
-        console.log("active Players: "+_self.data.activePlayers);
-        console.log("available Colors: "+_self.data.availableColors);
-        console.log("player colors: "+_self.data.playerColors);
-        console.log("player rabbits: "+_self.data.playerRabbits);
-
+        $state.go('boardPlaying', {activePlayers: _self.data.activePlayers, playerNames: _self.data.playerNames, playerColors: _self.data.playerColors, playerRabbits: _self.data.playerRabbits, gameId:_self.data.gameId});
       }
+
     }
 
     return _self;
