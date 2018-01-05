@@ -1,6 +1,7 @@
 <div id="playerConfig">
 
 	<div class="availableGames">
+		<span class="error singleGameName" ng-if="data.gamesId.length == 0">Cargando juegos disponibles</span>
 		<span ng-if="!data.gameId" ng-repeat="game in data.gamesId track by $index" class="singleGameName">
 			<a href ng-click="subscribeToChannel(game)">{{game}}</a>
 		</span>
