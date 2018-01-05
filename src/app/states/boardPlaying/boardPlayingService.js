@@ -116,6 +116,7 @@ app.service("BoardPlayingService", [
       processRound:function(){
         if(_self.allVotesIn()){
           _self.showVotesInPlayers();
+          _self.countEachCardVotes();
           _self.data.readyForNextRound = true;
         }else{
           _self.data.message = "Faltan votos";
@@ -169,6 +170,9 @@ app.service("BoardPlayingService", [
       },
 
       countEachCardVotes:function(){
+        _self.data.activePlayers.forEach(function(player, index){
+          _self.data.cardVotes[index] = 0;
+        });
         _self.data.roundVotes.forEach(function(vote, index){
           if(vote != 999){
             _self.data.cardVotes[vote-1] = _self.data.cardVotes[vote-1] + 1;
