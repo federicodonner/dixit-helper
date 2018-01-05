@@ -65,7 +65,7 @@ app.service("PlayerPlayingService", [
           _self.data.playerPositions.push(player.position);
           _self.data.playerNames.push(player.name);
           $rootScope.$digest();
-          console.log('playerNames: ',_self.data.playerNames);
+
         });
       },
 
@@ -82,31 +82,26 @@ app.service("PlayerPlayingService", [
       },
 
       receiveShowVotes:function(){
-        var votedPlayer = '';
-        var votes = [];
-        var cards = [];
-        var turnCard = 0;
-        var myIndex = 0;
-        var votedMyCard = [];
         _self.data.channel.bind('client-showVotes', function(response){
+          var votedPlayer = '';
+          var votes = [];
+          var cards = [];
+          var turnCard = 0;
+          var myIndex = 0;
+          var votedMyCard = [];
+
           _self.data.showVote = true;
-          console.log('playerNames ', _self.data.playerNames);
-          console.log('response ', response);
-          console.log('player Number', _self.data.playerNumber);
-          console.log('player Numbers', _self.data.playerNumbers);
 
           votes = response.votes;
           cards = response.cards;
           turnCard = response.turnCard;
           myIndex = _self.data.playerNumbers.indexOf(_self.data.playerNumber);
 
-
           votes.forEach(function(vote, index){
             if(vote == cards[myIndex]){
               votedMyCard.push(_self.data.playerNames[index]);
             }
           })
-
 
           if(!_self.data.notMyTurn){
             //mi turno
@@ -117,15 +112,20 @@ app.service("PlayerPlayingService", [
             }else{
               _self.data.message = 'ME VOTARON: '+votedMyCard;
             }
-          }else if(votes[myIndex] == turnCard){
-            //voté a la tarjeta correcta
-            votedPlayer = _self.data.playerNames[votes.indexOf(999)];
-            _self.data.message = 'VOTÉ A '+votedPlayer;
           }else{
-            //voté a otra tarjeta
-            votedPlayer = _self.data.playerNames[cards.indexOf(votes[myIndex])]
-            _self.data.message = 'Voté a '+votedPlayer;
+            if(votes[myIndex] == turnCard){
+              //voté a la tarjeta correcta
+              votedPlayer = _self.data.playerNames[votes.indexOf(999)];
+              _self.data.message = 'VOTÉ A '+votedPlayer;
+            }else{
+              //voté a otra tarjeta
+              votedPlayer = _self.data.playerNames[cards.indexOf(votes[myIndex])]
+              _self.data.message = 'Voté a '+votedPlayer;
+            }
           }
+
+
+
 
           if(votedMyCard.length == 0){
             _self.data.playerMessage = 'No te votó nadie';
@@ -181,15 +181,13 @@ app.service("PlayerPlayingService", [
         _self.data.showVote = false;
         _self.data.message = '';
         _self.data.playerMessage = '';
-        _self.data.votedPlayer = '';
-        _self.data.votedMyCard = '';
         $rootScope.$digest();
 
       },
 
       beginNextRound:function(){
         _self.data.channel.bind('client-newRound', function(response){
-          console.log(response);
+
           _self.resetForNextRound();
         });
       }

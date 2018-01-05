@@ -54,17 +54,11 @@ app.service("BoardPlayingService", [
       },
 
       initializeBoard:function(){
-console.log('active players', _self.data.activePlayers);
-console.log('player positions', _self.data.playerPositions);
-
         _self.data.activePlayers.forEach(function(player, index){
           _self.data.roundVotes.push(0);
           _self.data.roundCards.push(0);
           _self.data.playerPositions.push(0);
         });
-
-console.log('player positions', _self.data.playerPositions);
-
       },
 
       getPlayerList:function(){
@@ -123,8 +117,11 @@ console.log('player positions', _self.data.playerPositions);
 
       processRound:function(){
         if(_self.allVotesIn()){
+          _self.data.turnCard = _self.getTurnCard();
+
           _self.showVotesInPlayers();
           _self.countEachCardVotes();
+
           _self.data.readyForNextRound = true;
         }else{
           _self.data.message = "Faltan votos";
@@ -133,30 +130,29 @@ console.log('player positions', _self.data.playerPositions);
 
       processPoints:function(){
         if(_self.allVotesIn()){
-        _self.data.turnCard = _self.getTurnCard();
-        _self.countEachCardVotes();
-        if(_self.allVotesCorrectOrNot(true, _self.data.turnCard)){
-          _self.data.roundVotes.forEach(function(vote, index){
-            if(vote!=999){
-              _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
-            }
-          });
-        }else if(_self.allVotesCorrectOrNot(false, _self.data.turnCard)){
-          _self.data.roundVotes.forEach(function(vote, index){
-            if(vote!=999){
-              _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
-              _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
-            }
-          });
-        }else{
-          _self.data.roundVotes.forEach(function(vote, index){
-            if(vote == _self.data.turnCard || vote == 999){
-              _self.data.playerPositions[index] = _self.data.playerPositions[index] + 3;
-            }else{
-              _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
-            }
-          });
-        }
+          _self.countEachCardVotes();
+          if(_self.allVotesCorrectOrNot(true, _self.data.turnCard)){
+            _self.data.roundVotes.forEach(function(vote, index){
+              if(vote!=999){
+                _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
+              }
+            });
+          }else if(_self.allVotesCorrectOrNot(false, _self.data.turnCard)){
+            _self.data.roundVotes.forEach(function(vote, index){
+              if(vote!=999){
+                _self.data.playerPositions[index] = _self.data.playerPositions[index]+2;
+                _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
+              }
+            });
+          }else{
+            _self.data.roundVotes.forEach(function(vote, index){
+              if(vote == _self.data.turnCard || vote == 999){
+                _self.data.playerPositions[index] = _self.data.playerPositions[index] + 3;
+              }else{
+                _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] = _self.data.playerPositions[_self.data.roundCards.indexOf(vote)] + 1;
+              }
+            });
+          }
           _self.data.readyForNextRound = true;
         }else{
           // _self.data.message = "Faltan votos";
