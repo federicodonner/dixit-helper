@@ -29,6 +29,8 @@ app.service("BoardPlayingService", [
         _self.data.playerNames = $stateParams.playerNames;
         _self.data.playerColors = $stateParams.playerColors;
         _self.data.playerRabbits = $stateParams.playerRabbits;
+        
+        $rootScope.pusher.channels.channels['private-registerPlayers'].unbind('client-requestGameId');
 
         _self.data.channel = $rootScope.pusher.subscribe('private-game_'+$stateParams.gameId);
 
