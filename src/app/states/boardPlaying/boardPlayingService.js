@@ -29,7 +29,7 @@ app.service("BoardPlayingService", [
         _self.data.playerNames = $stateParams.playerNames;
         _self.data.playerColors = $stateParams.playerColors;
         _self.data.playerRabbits = $stateParams.playerRabbits;
-        
+
         $rootScope.pusher.channels.channels['private-registerPlayers'].unbind('client-requestGameId');
 
         _self.data.channel = $rootScope.pusher.subscribe('private-game_'+$stateParams.gameId);
@@ -54,11 +54,17 @@ app.service("BoardPlayingService", [
       },
 
       initializeBoard:function(){
+console.log('active players', _self.data.activePlayers);
+console.log('player positions', _self.data.playerPositions);
+
         _self.data.activePlayers.forEach(function(player, index){
           _self.data.roundVotes.push(0);
           _self.data.roundCards.push(0);
           _self.data.playerPositions.push(0);
         });
+
+console.log('player positions', _self.data.playerPositions);
+
       },
 
       getPlayerList:function(){
@@ -126,7 +132,7 @@ app.service("BoardPlayingService", [
       },
 
       processPoints:function(){
-        // if(_self.allVotesIn()){
+        if(_self.allVotesIn()){
         _self.data.turnCard = _self.getTurnCard();
         _self.countEachCardVotes();
         if(_self.allVotesCorrectOrNot(true, _self.data.turnCard)){
@@ -151,10 +157,10 @@ app.service("BoardPlayingService", [
             }
           });
         }
-        //   _self.data.readyForNextRound = true;
-        // }else{
-        //   _self.data.message = "Faltan votos";
-        // }
+          _self.data.readyForNextRound = true;
+        }else{
+          // _self.data.message = "Faltan votos";
+        }
       },
 
       getTurnCard:function(){
