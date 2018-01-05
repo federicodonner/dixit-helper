@@ -7,7 +7,7 @@
 	</div>
 
 	<div id="votes">
-		<div class="circle" ng-repeat="player in data.activePlayers track by $index" ng-style="{'background': data.playerColors[$index]}" ng-class="{'hideCardVote': data.roundVotes[$index] != 0}"></div>
+		<div class="circle" ng-repeat="player in data.activePlayers track by $index" ng-style="{'background': data.playerColors[$index]}" ng-class="{'hideCardVote': data.roundVotes[$index] > 0}"></div>
 	</div>
 
 	<div ng-repeat="vote in data.cardVotes track by $index" class="cardVote{{$index+1}}">

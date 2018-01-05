@@ -24,6 +24,7 @@ app.service("PlayerPlayingService", [
         message:"",
         imDone:false,
         showVote:false,
+        errorInVote:false
       },
 
       initialize:function(){
@@ -39,6 +40,7 @@ app.service("PlayerPlayingService", [
 
         });
 
+
         _self.data.playerNumber = $stateParams.playerNumber;
         _self.data.playerName = $stateParams.playerName;
         _self.data.playerColor = $stateParams.playerColor;
@@ -46,6 +48,7 @@ app.service("PlayerPlayingService", [
         _self.beginNextRound();
         _self.receivePlayerTurn();
         _self.receiveShowVotes();
+        _self.showVotesError();
       },
 
       receivePlayerList:function(){
@@ -90,6 +93,7 @@ app.service("PlayerPlayingService", [
           var myIndex = 0;
           var votedMyCard = [];
 
+          _self.data.errorInVote = false;
           _self.data.showVote = true;
 
           votes = response.votes;
@@ -123,9 +127,6 @@ app.service("PlayerPlayingService", [
               _self.data.message = 'Voté a '+votedPlayer;
             }
           }
-
-
-
 
           if(votedMyCard.length == 0){
             _self.data.playerMessage = 'No te votó nadie';
@@ -169,8 +170,25 @@ app.service("PlayerPlayingService", [
       },
 
       notMyTurn:function(){
-        _self.sendVote(0,0);
+        //I need to send an invalid vote to stop the game from progressing
+        //if it was my turn, I send 0, 0 to allow other players to claim their turn
+        //if it wasn't, send -1, -1 simply to allow myself to vote again but don't free the turn
+        if(_self.data.notMyTurn){
+          _self.sendVote(-1, -1);
+        }else{
+          _self.sendVote(0,0);
+        }
         _self.data.imDone = false;
+        _self.data.errorInVote = false;
+      },
+
+      showVotesError:function(){
+        console.log('setup show errors');
+        _self.data.channel.bind('client-errorInVotes', function(response){
+          console.log(response);
+          _self.data.errorInVote = true;
+          $rootScope.$digest();
+        })
       },
 
       resetForNextRound:function(){
@@ -181,6 +199,7 @@ app.service("PlayerPlayingService", [
         _self.data.showVote = false;
         _self.data.message = '';
         _self.data.playerMessage = '';
+        _self.data.errorInVote = false;
         $rootScope.$digest();
 
       },

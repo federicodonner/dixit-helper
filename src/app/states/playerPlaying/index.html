@@ -5,6 +5,9 @@
 		<div ng-if="data.imDone && !data.showVote">
 			<a class="turnButtons upsButton" ng-click="notMyTurn()">ups!</a>
 		</div>
+		<div ng-if="data.errorInVote && data.notMyTurn" class="playerErrorVoteMessage">
+			Hubo un error, revisa tu voto
+		</div>
 		<div class="messageWrapper">
 			<div ng-hide="!data.imDone" class="yaVote" align="center" ng-class="{'showVote': data.showVote, 'notNumber': !data.showVote}">
 				{{data.message}}

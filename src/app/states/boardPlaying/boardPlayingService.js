@@ -103,12 +103,12 @@ app.service("BoardPlayingService", [
       allVotesIn:function(){
         var allIn = true;
         _self.data.roundVotes.forEach(function(vote, index){
-          if(vote == 0){
+          if(vote <= 0){
             allIn = false;
           }
         });
         _self.data.roundCards.forEach(function(card, index){
-          if(card == 0){
+          if(card <= 0){
             allIn = false;
           }
         });
@@ -119,13 +119,21 @@ app.service("BoardPlayingService", [
         if(_self.allVotesIn()){
           _self.data.turnCard = _self.getTurnCard();
 
-          _self.showVotesInPlayers();
-          _self.countEachCardVotes();
+          if(_self.data.turnCard == -1){
 
-          _self.data.readyForNextRound = true;
+            _self.data.channel.trigger('client-errorInVotes', 'Error in Votes');
+
+          }else{
+
+            _self.showVotesInPlayers();
+            _self.countEachCardVotes();
+
+            _self.data.readyForNextRound = true;
+          }
         }else{
           _self.data.message = "Faltan votos";
         }
+
       },
 
       processPoints:function(){
@@ -160,6 +168,22 @@ app.service("BoardPlayingService", [
       },
 
       getTurnCard:function(){
+
+        var repeatedCard = false;
+        _self.data.roundCards.forEach(function(cardA, indexA){
+          _self.data.roundCards.forEach(function(cardB, indexB){
+            if(cardA == cardB && indexA != indexB){
+              repeatedCard = true;
+
+            }
+          })
+        })
+
+        if(repeatedCard){
+          return -1;
+        }
+
+
         var card = 1;
         var searching = true;
         while(searching){
